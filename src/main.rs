@@ -4,12 +4,13 @@ use std::io;
 use std::io::BufRead;
 use std::str::FromStr;
 
-mod day1;
+mod day01;
+mod day02;
 
 fn main() {
     match env::args().nth(1).unwrap().as_str() {
-        "1a" => println!("{}", day1::part1(read_lines_stdin())),
-        "1b" => println!("{}", day1::part2(read_lines_stdin())),
+        "1a" => println!("{}", day01::part1(read_lines_stdin())),
+        "1b" => println!("{}", day01::part2(read_lines_stdin())),
         _ => (),
     }
 }

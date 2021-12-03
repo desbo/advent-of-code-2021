@@ -56,16 +56,16 @@ impl FromStr for Command {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let split: Vec<&str> = s.split(' ').collect();
 
-        fn parse_units(units: &str, input: &str) -> Result<u32, ParseCommandError> {
+        let parse_units = |units: &str| {
             units
                 .parse()
-                .map_err(|_e| ParseCommandError(String::from(input)))
-        }
+                .map_err(|_e| ParseCommandError(String::from(s)))
+        };
 
         match split.as_slice() {
-            ["forward", units] => parse_units(units, s).map(|u| Command::Forward(u)),
-            ["down", units] => parse_units(units, s).map(|u| Command::Down(u)),
-            ["up", units] => parse_units(units, s).map(|u| Command::Up(u)),
+            ["forward", units] => parse_units(units).map(|u| Command::Forward(u)),
+            ["down", units] => parse_units(units).map(|u| Command::Down(u)),
+            ["up", units] => parse_units(units).map(|u| Command::Up(u)),
             _ => Err(ParseCommandError(String::from(s))),
         }
     }

@@ -28,7 +28,7 @@ impl Position {
     }
 }
 
-pub fn solve(commands: Vec<Command>) -> i32 {
+pub fn solve(commands: &[Command]) -> i32 {
     let final_position = commands
         .iter()
         .fold(Position::ORIGIN, |pos, command| match command {

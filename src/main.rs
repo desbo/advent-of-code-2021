@@ -13,7 +13,8 @@ fn main() {
         "1a" => println!("{}", day01::part1(&read_lines_stdin())),
         "1b" => println!("{}", day01::part2(&read_lines_stdin())),
         "2" => println!("{}", day02::solve(&read_lines_stdin())),
-        "3" => println!("{}", day03::solve(&read_lines_stdin())),
+        "3a" => println!("{}", day03::part1(&read_lines_stdin())),
+        "3b" => println!("{}", day03::part2(&read_lines_stdin())),
         _ => (),
     }
 }

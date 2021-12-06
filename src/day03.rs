@@ -15,62 +15,43 @@ pub fn part1(report: &[String]) -> u32 {
 }
 
 pub fn part2(report: &[String]) -> u32 {
-    let counts = count_bits(report);
+    #[derive(PartialEq)]
+    enum SearchMode {
+        MostCommon,
+        LeastCommon,
+    }
 
-    let mut most_common_bits = Vec::new();
-    let mut least_common_bits = Vec::new();
+    fn search(report: &[String], pos: usize, mode: SearchMode) -> String {
+        let counts = count_bits(report);
 
-    for i in 0..counts.len() {
-        if counts[i] * 2 == report.len() as u32 {
-            println!("HERE");
-            most_common_bits.push(1);
-            least_common_bits.push(0);
+        let common = counts[pos] * 2 >= report.len() as u32;
+
+        let search_bit = match mode {
+            SearchMode::MostCommon => common,
+            SearchMode::LeastCommon => !common,
+        };
+
+        let search_bit_char = if search_bit { '1' } else { '0' };
+
+        let filtered_report: Vec<String> = report
+            .iter()
+            .filter(|bit_string| bit_string.chars().nth(pos).unwrap() == search_bit_char)
+            .cloned()
+            .collect();
+
+        if filtered_report.len() == 1 {
+            filtered_report[0].clone()
         } else {
-            let common = counts[i] > report.len() as u32 / 2;
-            most_common_bits.push(u8::from(common));
-            least_common_bits.push(u8::from(!common));
+            search(&filtered_report, pos + 1, mode)
         }
     }
 
-    let mut most_common_search_string = bits_to_binary_string(most_common_bits);
-    let mut least_common_search_string = bits_to_binary_string(least_common_bits);
+    let oxy = search(report, 0, SearchMode::MostCommon);
+    let co2 = search(report, 0, SearchMode::LeastCommon);
 
-    println!(
-        "most common: {}\t least common: {}",
-        most_common_search_string, least_common_search_string
-    );
+    let to_int = |str| u32::from_str_radix(str, 2).unwrap();
 
-    let mut oxy = "";
-    let mut co2 = "";
-
-    let search = |search_string: &String| report.iter().find(|s| s.starts_with(search_string));
-
-    loop {
-        println!(
-            "most common: {}\t least common: {}",
-            most_common_search_string, least_common_search_string
-        );
-
-        if oxy == "" {
-            search(&most_common_search_string).map_or_else(
-                || drop(most_common_search_string.pop()),
-                |result| oxy = result,
-            )
-        }
-
-        if co2 == "" {
-            search(&least_common_search_string).map_or_else(
-                || drop(least_common_search_string.pop()),
-                |result| co2 = result,
-            )
-        }
-
-        println!("oxy: {}\t co2: {}", oxy, co2);
-
-        if oxy != "" && co2 != "" {
-            return u32::from_str_radix(&oxy, 2).unwrap() * u32::from_str_radix(&co2, 2).unwrap();
-        }
-    }
+    to_int(&oxy) * to_int(&co2)
 }
 
 fn count_bits(report: &[String]) -> Vec<u32> {

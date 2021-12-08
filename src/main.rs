@@ -19,6 +19,8 @@ fn main() {
         "3b" => println!("{}", day03::part2(&read_lines_stdin())),
         "4a" => println!("{}", day04::part1(&read_lines_stdin())),
         "4b" => println!("{}", day04::part2(&read_lines_stdin())),
+        "5a" => println!("{}", day05::part1(&read_lines_stdin())),
+        "5b" => println!("{}", day05::part2(&read_lines_stdin())),
         _ => (),
     }
 }

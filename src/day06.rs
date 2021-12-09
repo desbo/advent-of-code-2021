@@ -15,7 +15,7 @@ impl School {
     }
 
     fn n_steps(&mut self, n: u32) {
-        (0..n + 1).for_each(|i| self.step())
+        (0..n + 1).for_each(|_i| self.step())
     }
 
     fn population(&self) -> u64 {

@@ -11,6 +11,7 @@ mod day04;
 mod day05;
 mod day06;
 mod day07;
+mod day08;
 
 fn main() {
     match env::args().nth(1).unwrap().as_str() {
@@ -27,6 +28,7 @@ fn main() {
         "6b" => println!("{}", day06::part2(&read_lines_stdin::<String>().concat())),
         "7a" => println!("{}", day07::part1(&read_lines_stdin::<String>().concat())),
         "7b" => println!("{}", day07::part2(&read_lines_stdin::<String>().concat())),
+        "8a" => println!("{}", day08::part1(&read_lines_stdin())),
         _ => (),
     }
 }

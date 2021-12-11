@@ -53,11 +53,12 @@ fn update_mapping(digits: &Vec<&str>) {
             .chars(),
     );
 
-    signals_by_number
-        .values()
-        .filter(|c| c.len() == 3)
-        .map(|sig| {
-            sig.iter()
+    let (two, threeAndFive) = signals_by_number
+        .into_values()
+        .filter(|c| c.iter().collect::<Vec<&&str>>()[0].len() == 5)
+        .map(|i| i.into_iter().collect::<Vec<&str>>())
+        .partition(|sig| {
+            sig.into_iter()
                 .find(|a| {
                     HashSet::from_iter(a.chars())
                         .difference(&chars_4)
@@ -65,10 +66,10 @@ fn update_mapping(digits: &Vec<&str>) {
                         .len()
                         == 3
                 })
-                .unwrap()
+                .is_some()
         });
 
-    println!("{:?}", signals_by_number)
+    println!("{:?}", two);
 }
 
 fn parse_input(input: &[String]) -> Vec<Vec<&str>> {

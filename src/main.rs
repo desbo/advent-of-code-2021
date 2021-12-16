@@ -29,6 +29,7 @@ fn main() {
         "7a" => println!("{}", day07::part1(&read_lines_stdin::<String>().concat())),
         "7b" => println!("{}", day07::part2(&read_lines_stdin::<String>().concat())),
         "8a" => println!("{}", day08::part1(&read_lines_stdin())),
+        "8b" => println!("{}", day08::part2(&read_lines_stdin())),
         _ => (),
     }
 }

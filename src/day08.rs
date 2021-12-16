@@ -153,38 +153,32 @@ fn digits_by_signal(digits: &Vec<Signal>) -> HashMap<Signal, u8> {
         .filter(|c| c.iter().collect::<Vec<&Signal>>()[0].len() == 6)
         .flatten();
 
-    let chars_1: HashSet<char> =
-        HashSet::from_iter(known_signals_by_number.get(&1).unwrap().chars.chars());
+    let chars_4: HashSet<char> =
+        HashSet::from_iter(known_signals_by_number.get(&4).unwrap().chars.chars());
 
-    let (zero_and_nine, six): (Vec<Signal>, Vec<Signal>) = six_character_signals.partition(|str| {
-        chars_1
+    let (nine, zero_and_six): (Vec<Signal>, Vec<Signal>) = six_character_signals.partition(|str| {
+        chars_4
             .difference(&HashSet::from_iter(str.chars.chars()))
             .collect::<Vec<&char>>()
             .len()
             == 0
     });
 
-    known_signals_by_number.insert(6, six[0].clone());
+    println!("{:?}, {:?}", zero_and_six, nine);
 
-    if let [zero_or_nine, nine_or_zero] = &zero_and_nine
-        .clone()
+    known_signals_by_number.insert(9, nine[0].clone());
+
+    let chars_1: HashSet<char> =
+        HashSet::from_iter(known_signals_by_number.get(&1).unwrap().chars.chars());
+
+    let (zero, six): (Vec<Signal>, Vec<Signal>) = zero_and_six
         .into_iter()
-        .map(|c| HashSet::from_iter(c.chars.chars()))
-        .collect::<Vec<HashSet<char>>>()
-        .as_slice()[..2]
-    {
-        let e_and_d = zero_or_nine.symmetric_difference(&nine_or_zero);
-        let (e, _d): (Vec<char>, Vec<char>) = e_and_d.partition(|chr| chars_2.contains(chr));
+        .partition(|signal| chars_1.iter().all(|c| signal.chars.contains(*c)));
 
-        println!("{:?}", chars_2);
-        let (zero, nine): (Vec<Signal>, Vec<Signal>) = zero_and_nine
-            .clone()
-            .into_iter()
-            .partition(|str| str.chars.contains(e[0]));
+    println!("{:?}, {:?}", zero, six);
 
-        known_signals_by_number.insert(0, zero[0].clone());
-        known_signals_by_number.insert(9, nine[0].clone());
-    }
+    known_signals_by_number.insert(0, zero[0].clone());
+    known_signals_by_number.insert(6, six[0].clone());
 
     HashMap::from_iter(
         known_signals_by_number
